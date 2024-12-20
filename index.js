@@ -38,6 +38,13 @@ async function run() {
       res.send(result);
     })
 
+    app.get('/get-jobs', async(req, res) => {
+      const email = req.query.email;
+      const query = { 'buyer.email': email };
+      const result = await jobsCollection.find(query).toArray();
+      res.send(result);
+    })
+
     app.get('/add-jobs', async(req, res) => {
       const result = await jobsCollection.find().toArray();
       res.send(result);
