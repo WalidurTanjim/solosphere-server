@@ -28,6 +28,7 @@ async function run() {
 
     const db = client.db('SoloSphere');
     const jobsCollection = db.collection('jobs');
+    const bidsCollection = db.collection('bids');
 
 
     // jobs related APIs
@@ -72,6 +73,27 @@ async function run() {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await jobsCollection.deleteOne(query);
+      res.send(result);
+    })
+
+
+
+    // bids related APIs
+    app.get('/add-bid/:id', async(req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await bidsCollection.findOne(query);
+      res.send(result);
+    })
+
+    app.get('/add-bid', async(req, res) => {
+      const result = await bidsCollection.find().toArray();
+      res.send(result);
+    })
+
+    app.post('/add-bid', async(req, res) => {
+      const bid = req.body;
+      const result = await bidsCollection.insertOne(bid);
       res.send(result);
     })
 
