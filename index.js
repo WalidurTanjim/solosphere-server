@@ -93,6 +93,17 @@ async function run() {
 
     app.post('/add-bid', async(req, res) => {
       const bid = req.body;
+
+      // user can't bid 2 times in a same job
+      const query = { email: bid.email, job_id: bid.job_id };
+      const exist = await bidsCollection.findOne(query);
+
+      if(exist){
+        console.table(exist)
+        return res.status(400).send('You have already placed a bid on this job.')
+      }
+      
+      // insert bid to the collection
       const result = await bidsCollection.insertOne(bid);
       res.send(result);
     })
