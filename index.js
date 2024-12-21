@@ -86,6 +86,13 @@ async function run() {
       res.send(result);
     })
 
+    app.get('/get-my-bids', async(req, res) => {
+      const email = req.query.email;
+      const query = { emailAddress: email };
+      const result = await bidsCollection.find(query).toArray();
+      res.send(result);
+    })
+
     app.get('/add-bid', async(req, res) => {
       const result = await bidsCollection.find().toArray();
       res.send(result);
